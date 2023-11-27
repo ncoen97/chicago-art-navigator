@@ -1,8 +1,8 @@
 import { useQuery } from 'react-query';
 import { getArtworks } from '../api/artic';
 
-const useArtworks = () => {
-  return useQuery({ queryKey: 'artworks', queryFn: getArtworks });
+const useArtworks = ({ q }: { q: string }) => {
+  return useQuery({ queryKey: ['artworks', q], queryFn: () => getArtworks({ q }), enabled: !!q });
 };
 
 export default useArtworks;
