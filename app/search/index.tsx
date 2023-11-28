@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Text, useTheme } from 'react-native-paper';
 import { FlatList, StyleSheet, View } from 'react-native';
 import useArtworks from '../../hooks/useArtworks';
@@ -10,28 +10,45 @@ const Search = () => {
   const { colors } = useTheme();
   const styles = makeStyles(colors);
   const [search, setSearch] = useState('');
-  const debouncedSearch = useDebounce(search, 300);
-  const { data: getArtworks, isError, isLoading } = useArtworks({ q: debouncedSearch });
+  const q = useDebounce(search, 300);
+
+  const { data: getArtworks, isError, isLoading, isFetchingNextPage, hasNextPage, fetchNextPage } = useArtworks({ q });
+
+  const artworks = useMemo(() => getArtworks?.pages.map(page => page.data).flat(), [getArtworks?.pages]);
+
+  const loadMore = () => {
+    if (hasNextPage) {
+      fetchNextPage();
+    }
+  };
+
   return (
     <View style={styles.root}>
       <TextInput style={styles.search} label="Search" value={search} onChangeText={text => setSearch(text)} />
       <View style={styles.resultsContainer}>
-        {!search && !getArtworks?.data.length && (
-          <Text style={styles.empty}>Use the input above to search for exciting artwork!</Text>
-        )}
+        {!search && !artworks && <Text style={styles.empty}>Use the input above to search for exciting artwork!</Text>}
         {isLoading ? (
           <ActivityIndicator style={styles.loading} />
         ) : isError ? (
           <Text>Error</Text>
         ) : (
           <FlatList
-            data={getArtworks?.data}
+            data={artworks}
             numColumns={2}
             renderItem={artwork => (
-              <ArtworkCover key={artwork.item.id} artwork={artwork.item} iiif_url={getArtworks?.config.iiif_url} />
+              <ArtworkCover
+                origin="search"
+                key={artwork.item.id}
+                artwork={artwork.item}
+                iiif_url={getArtworks?.pages[0].config.iiif_url}
+              />
             )}
-            keyExtractor={artwork => artwork.title}
+            keyExtractor={artwork => artwork.id.toString()}
             contentContainerStyle={styles.arworksList}
+            columnWrapperStyle={styles.artworkColumn}
+            onEndReached={loadMore}
+            onEndReachedThreshold={0.3}
+            ListFooterComponent={isFetchingNextPage ? <ActivityIndicator /> : null}
           />
         )}
       </View>
@@ -61,5 +78,8 @@ const makeStyles = (colors: any) =>
       display: 'flex',
       alignItems: 'stretch',
       overflowY: 'auto',
+      gap: 16,
+      padding: 16,
     },
+    artworkColumn: { gap: 16 },
   });

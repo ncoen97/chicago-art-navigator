@@ -2,12 +2,11 @@ import axios from 'axios';
 import { IGetArtwork, IGetArtworks } from '../types/api';
 
 const apiURL = 'https://api.artic.edu/api/v1';
-const iiifURL = 'https://www.artic.edu/iiif/2';
 
-export const getArtworks = (params: { q: string }) => {
+export const getArtworks = (q: string, pageParam: number) => {
   return axios
     .get<IGetArtworks>(`${apiURL}/artworks/search`, {
-      params: { ...params, fields: ['id', 'title', 'artist_title', 'image_id', 'thumbnail'] },
+      params: { fields: ['id', 'title', 'artist_title', 'image_id', 'thumbnail'], q, page: pageParam || 1 },
     })
     .then(res => res.data);
 };

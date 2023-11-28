@@ -16,6 +16,13 @@ export interface IArtwork {
 export interface IGetArtworks {
   data: IArtwork[];
   config: { iiif_url: string };
+  pagination: {
+    total: number;
+    limit: number;
+    offset: number;
+    total_pages: number;
+    current_page: number;
+  };
 }
 
 export interface IGetArtwork {

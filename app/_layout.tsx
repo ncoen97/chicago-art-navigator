@@ -5,6 +5,7 @@ import { MD3LightTheme as DefaultTheme, PaperProvider } from 'react-native-paper
 import { Provider } from 'react-redux';
 import { store } from '../redux/configureStore';
 import { QueryClient, QueryClientProvider } from 'react-query';
+import DrawerContent from '../components/DrawerContent';
 
 // Catch any errors thrown by the Layout component.
 export { ErrorBoundary } from 'expo-router';
@@ -49,30 +50,30 @@ function RootLayoutNav() {
     <QueryClientProvider client={queryClient}>
       <Provider store={store}>
         <PaperProvider theme={theme}>
-          <Drawer>
+          <Drawer drawerContent={DrawerContent}>
             <Drawer.Screen
-              name="index" // This is the name of the page and must match the url from root
+              name="index"
               options={{
                 drawerLabel: 'Home',
                 title: 'Art Institute Of Chicago',
               }}
             />
             <Drawer.Screen
-              name="favorites" // This is the name of the page and must match the url from root
+              name="favorites"
               options={{
                 drawerLabel: 'Favorites',
                 title: 'Art Institute Of Chicago',
               }}
             />
             <Drawer.Screen
-              name="search/index" // This is the name of the page and must match the url from root
+              name="search/index"
               options={{
                 drawerLabel: 'Search',
                 title: 'Art Institute Of Chicago',
               }}
             />
             <Drawer.Screen
-              name="search/[id]" // This is the name of the page and must match the url from root
+              name="search/[id]"
               options={{
                 drawerLabel: 'Search',
                 title: 'Art Institute Of Chicago',
@@ -80,14 +81,14 @@ function RootLayoutNav() {
               }}
             />
             <Drawer.Screen
-              name="settings" // This is the name of the page and must match the url from root
+              name="settings"
               options={{
                 drawerLabel: 'Settings',
                 title: 'Art Institute Of Chicago',
               }}
             />
             <Drawer.Screen
-              name="[...missing]" // This is the name of the page and must match the url from root
+              name="[...missing]"
               options={{
                 drawerLabel: 'Settings',
                 title: 'Art Institute Of Chicago',
