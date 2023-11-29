@@ -13,9 +13,9 @@ interface ArtworkCoverProps {
 const ArtworkCover: React.FC<ArtworkCoverProps> = ({ artwork, origin, iiif_url = 'https://www.artic.edu/iiif/2' }) => {
   const router = useRouter();
   return (
-    <Card style={styles.card} onPress={() => router.push({ pathname: `/search/${artwork.id}`, params: { origin } })}>
+    <Card style={styles.card} onPress={() => router.push({ pathname: `/artwork/${artwork.id}`, params: { origin } })}>
       <Card.Cover
-        source={{ uri: `${iiif_url}/${artwork.image_id}/full/843,/0/default.jpg` }}
+        source={{ uri: `${iiif_url}/${artwork.image_id}/full/200,/0/default.jpg` }}
         alt={artwork.thumbnail?.alt_text || ''}
         style={{ borderBottomLeftRadius: 0, borderBottomRightRadius: 0 }}
       />

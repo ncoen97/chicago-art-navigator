@@ -14,7 +14,21 @@ export const getArtworks = (q: string, pageParam: number) => {
 export const getArtwork = (id: number) => {
   return axios
     .get<IGetArtwork>(`${apiURL}/artworks/${id}`, {
-      params: { fields: ['id', 'title', 'artist_title', 'image_id', 'thumbnail'] },
+      params: {
+        fields: [
+          'id',
+          'title',
+          'artist_title',
+          'image_id',
+          'medium_display',
+          'dimensions',
+          'thumbnail',
+          'place_of_origin',
+          'date_display',
+          'exhibition_history',
+          'is_on_view',
+        ],
+      },
     })
     .then(res => res.data);
 };

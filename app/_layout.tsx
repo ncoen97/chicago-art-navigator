@@ -33,15 +33,9 @@ const theme = {
     ...DefaultTheme.colors,
     primary: 'rgb(181, 9, 56)', // museum's primary color
     accent: 'rgb(3, 101, 100)', // deep teal
-    background: '#f6f6f6', // light grey
-    surface: '#ffffff', // white
-    text: '#333333', // dark grey for text
-    disabled: '#cccccc', // grey for disabled elements
-    placeholder: '#888888', // lighter grey for placeholders
-    backdrop: 'rgba(0,0,0,0.5)', // for modal backdrops
-    onSurface: '#000000', // black for elements on surface
-    button: 'rgb(181, 9, 56)',
-    input: '#ebebeb', // light grey or a lighter shade of primary
+    background: '#f6f6f6', // light gray
+    backdrop: 'rgba(0,0,0,0.5)',
+    input: '#ebebeb', // light gray
   },
 };
 
@@ -50,11 +44,14 @@ function RootLayoutNav() {
     <QueryClientProvider client={queryClient}>
       <Provider store={store}>
         <PaperProvider theme={theme}>
-          <Drawer drawerContent={DrawerContent}>
+          <Drawer
+            screenListeners={{ state: state => console.log(JSON.stringify(state)) }}
+            drawerContent={DrawerContent}
+          >
             <Drawer.Screen
               name="index"
               options={{
-                drawerLabel: 'Home',
+                drawerLabel: 'Search',
                 title: 'Art Institute Of Chicago',
               }}
             />
@@ -66,16 +63,8 @@ function RootLayoutNav() {
               }}
             />
             <Drawer.Screen
-              name="search/index"
+              name="artwork/[id]"
               options={{
-                drawerLabel: 'Search',
-                title: 'Art Institute Of Chicago',
-              }}
-            />
-            <Drawer.Screen
-              name="search/[id]"
-              options={{
-                drawerLabel: 'Search',
                 title: 'Art Institute Of Chicago',
                 drawerItemStyle: { display: 'none' },
               }}

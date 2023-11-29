@@ -5,6 +5,13 @@ export interface IArtwork {
   title: string;
   artist_title: string;
   image_id: string;
+  medium_display: string;
+  dimensions: string;
+  artist_display: string;
+  place_of_origin: string;
+  date_display: string;
+  exhibition_history: string;
+  is_on_view: string;
   thumbnail: {
     lqip: string; // data:image/type;base64
     width: number;

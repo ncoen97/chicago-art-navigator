@@ -1,4 +1,4 @@
-import { useGlobalSearchParams, useLocalSearchParams, useRouter } from 'expo-router';
+import { useGlobalSearchParams, useLocalSearchParams, useRootNavigationState, useRouter } from 'expo-router';
 import React, { useEffect, useMemo } from 'react';
 import { ActivityIndicator, Button, Icon, Text, useTheme } from 'react-native-paper';
 import useArtwork from '../../hooks/useArtwork';
@@ -8,10 +8,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addArtwork, removeArtwork } from '../../redux/slices/favoritesSlice';
 import { RootState } from '../../redux/slices/rootSlice';
 import { IArtwork } from '../../types/api';
+import { useIsFocused } from '@react-navigation/native';
+import UnknownText from '../../components/UnknownText';
 
 const SearchItem = () => {
   const { colors } = useTheme();
   const router = useRouter();
+  const isFocused = useIsFocused();
   const styles = makeStyles(colors);
   const dispatch = useDispatch();
   const { id } = useLocalSearchParams();
@@ -21,13 +24,21 @@ const SearchItem = () => {
   const { data: getArtwork, isLoading, isError } = useArtwork(Number(id));
 
   useEffect(() => {
-    const backAction = () => {
-      //@ts-ignore we manually check this value is correct when doing router.push
-      router.push(origin);
-      return true;
-    };
-    const backHandler = BackHandler.addEventListener('hardwareBackPress', backAction);
-    return () => backHandler.remove();
+    if (isFocused) {
+      const backAction = () => {
+        if (origin === 'index') {
+          router.back();
+        } else {
+          //@ts-ignore we manually check this value is correct when passing the prop
+          router.push(origin);
+        }
+        return true;
+      };
+      const backHandler = BackHandler.addEventListener('hardwareBackPress', backAction);
+      return () => {
+        backHandler.remove();
+      };
+    }
   }, [origin]);
 
   //@ts-ignore We make sure it's not undefined while rendering
@@ -55,7 +66,9 @@ const SearchItem = () => {
             <View style={styles.informationHeaderContainer}>
               <View style={styles.titleContainer}>
                 <Text style={styles.title}>{getArtwork?.data.title}</Text>
-                <Text>{getArtwork?.data.artist_title}</Text>
+                <UnknownText style={styles.subtitle} label="" isUnknown={!getArtwork?.data.artist_title}>
+                  {getArtwork?.data.artist_title}
+                </UnknownText>
               </View>
               {isFav ? (
                 <MaterialCommunityIcons
@@ -80,6 +93,24 @@ const SearchItem = () => {
               )}
             </View>
           </View>
+          <View style={styles.detailsContainer}>
+            <UnknownText label="Place of origin: " isUnknown={!getArtwork?.data.place_of_origin}>
+              {getArtwork?.data.place_of_origin}
+            </UnknownText>
+            <UnknownText label="Date: " isUnknown={!getArtwork?.data.date_display}>
+              {getArtwork?.data.date_display}
+            </UnknownText>
+            <UnknownText label="History: " isUnknown={!getArtwork?.data.exhibition_history}>
+              {getArtwork?.data.exhibition_history}
+            </UnknownText>
+            <UnknownText label="Dimensions: " isUnknown={!getArtwork?.data.dimensions}>
+              {getArtwork?.data.dimensions}
+            </UnknownText>
+            <UnknownText label="Substances/Materials: " isUnknown={!getArtwork?.data.medium_display}>
+              {getArtwork?.data.medium_display}
+            </UnknownText>
+            <Text>This artwork is currently{getArtwork?.data.is_on_view ? '' : ' not'} on display</Text>
+          </View>
         </View>
       )}
     </View>
@@ -99,14 +130,14 @@ const makeStyles = (colors: any) =>
       flex: 1,
     },
     image: {
-      flex: 0.5,
+      flex: 1,
       resizeMode: 'contain',
       width: Dimensions.get('window').width,
       height: undefined,
     },
     informationContainer: {
       display: 'flex',
-      flex: 0.5,
+      flex: 0.1,
       padding: 16,
     },
     informationHeaderContainer: {
@@ -121,6 +152,9 @@ const makeStyles = (colors: any) =>
     },
     title: {
       fontWeight: '700',
+      fontSize: 18,
+    },
+    subtitle: {
       fontSize: 16,
     },
     icon: {
@@ -128,5 +162,10 @@ const makeStyles = (colors: any) =>
       justifyContent: 'center',
       alignItems: 'center',
       flexGrow: 0,
+    },
+    detailsContainer: {
+      display: 'flex',
+      flex: 1,
+      padding: 16,
     },
   });
