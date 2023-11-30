@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "682141647596",
+    "project_id": "chicago-art-navigator",
+    "storage_bucket": "chicago-art-navigator.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:682141647596:android:99cfed55e61319193e1bc9",
+        "android_client_info": {
+          "package_name": "ncoen.labs.chicago_art_navigator"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDPw1SvJpptjdAwcukGNAGnWcl4iaaxzs4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
