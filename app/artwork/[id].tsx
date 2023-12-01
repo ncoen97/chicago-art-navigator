@@ -1,6 +1,6 @@
-import { useGlobalSearchParams, useLocalSearchParams, useRootNavigationState, useRouter } from 'expo-router';
+import { useGlobalSearchParams, useLocalSearchParams, useRouter } from 'expo-router';
 import React, { useEffect, useMemo } from 'react';
-import { ActivityIndicator, Button, Icon, Text, useTheme } from 'react-native-paper';
+import { ActivityIndicator, Text, useTheme } from 'react-native-paper';
 import useArtwork from '../../hooks/useArtwork';
 import { BackHandler, Dimensions, Image, StyleSheet, View } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -26,12 +26,8 @@ const SearchItem = () => {
   useEffect(() => {
     if (isFocused) {
       const backAction = () => {
-        if (origin === 'index') {
-          router.back();
-        } else {
-          //@ts-ignore we manually check this value is correct when passing the prop
-          router.push(origin);
-        }
+        //@ts-ignore we manually check this value is correct when passing the prop
+        router.push(origin);
         return true;
       };
       const backHandler = BackHandler.addEventListener('hardwareBackPress', backAction);

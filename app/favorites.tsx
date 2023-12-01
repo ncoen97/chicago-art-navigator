@@ -23,7 +23,7 @@ const favorites = () => {
           columnWrapperStyle={styles.artworkColumn}
         />
       ) : (
-        <Link style={styles.empty} href={{ pathname: '/index/' }}>
+        <Link style={styles.empty} href={{ pathname: '/' }}>
           Click here to search for some artwork!
         </Link>
       )}

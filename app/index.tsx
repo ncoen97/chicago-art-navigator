@@ -36,7 +36,7 @@ const Search = () => {
             numColumns={2}
             renderItem={artwork => (
               <ArtworkCover
-                origin="index"
+                origin="/"
                 key={artwork.item.id}
                 artwork={artwork.item}
                 iiif_url={getArtworks?.pages[0].config.iiif_url}
