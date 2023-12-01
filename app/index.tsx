@@ -71,8 +71,8 @@ const makeStyles = (colors: any) =>
       paddingTop: 0,
     },
     search: { backgroundColor: colors.input },
-    empty: { marginTop: 8 },
-    loading: { marginTop: 8 },
+    empty: { marginTop: 16 },
+    loading: { marginTop: 16 },
     arworksList: {
       display: 'flex',
       alignItems: 'stretch',

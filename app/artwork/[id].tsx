@@ -10,6 +10,7 @@ import { RootState } from '../../redux/slices/rootSlice';
 import { IArtwork } from '../../types/api';
 import { useIsFocused } from '@react-navigation/native';
 import UnknownText from '../../components/UnknownText';
+import { ScrollView } from 'react-native-gesture-handler';
 
 const SearchItem = () => {
   const { colors } = useTheme();
@@ -58,8 +59,8 @@ const SearchItem = () => {
             }}
             alt={getArtwork?.data.thumbnail.alt_text}
           />
-          <View style={styles.informationContainer}>
-            <View style={styles.informationHeaderContainer}>
+          <View style={styles.contentContainer}>
+            <View style={styles.headerContainer}>
               <View style={styles.titleContainer}>
                 <Text style={styles.title}>{getArtwork?.data.title}</Text>
                 <UnknownText style={styles.subtitle} label="" isUnknown={!getArtwork?.data.artist_title}>
@@ -88,24 +89,24 @@ const SearchItem = () => {
                 />
               )}
             </View>
-          </View>
-          <View style={styles.detailsContainer}>
-            <UnknownText label="Place of origin: " isUnknown={!getArtwork?.data.place_of_origin}>
-              {getArtwork?.data.place_of_origin}
-            </UnknownText>
-            <UnknownText label="Date: " isUnknown={!getArtwork?.data.date_display}>
-              {getArtwork?.data.date_display}
-            </UnknownText>
-            <UnknownText label="History: " isUnknown={!getArtwork?.data.exhibition_history}>
-              {getArtwork?.data.exhibition_history}
-            </UnknownText>
-            <UnknownText label="Dimensions: " isUnknown={!getArtwork?.data.dimensions}>
-              {getArtwork?.data.dimensions}
-            </UnknownText>
-            <UnknownText label="Substances/Materials: " isUnknown={!getArtwork?.data.medium_display}>
-              {getArtwork?.data.medium_display}
-            </UnknownText>
-            <Text>This artwork is currently{getArtwork?.data.is_on_view ? '' : ' not'} on display</Text>
+            <ScrollView>
+              <Text>This artwork is currently{getArtwork?.data.is_on_view ? '' : ' not'} on display.</Text>
+              <UnknownText label="Place of origin: " isUnknown={!getArtwork?.data.place_of_origin}>
+                {getArtwork?.data.place_of_origin}
+              </UnknownText>
+              <UnknownText label="Date: " isUnknown={!getArtwork?.data.date_display}>
+                {getArtwork?.data.date_display}
+              </UnknownText>
+              <UnknownText label="History: " isUnknown={!getArtwork?.data.exhibition_history}>
+                {getArtwork?.data.exhibition_history}
+              </UnknownText>
+              <UnknownText label="Dimensions: " isUnknown={!getArtwork?.data.dimensions}>
+                {getArtwork?.data.dimensions}
+              </UnknownText>
+              <UnknownText label="Substances/Materials: " isUnknown={!getArtwork?.data.medium_display}>
+                {getArtwork?.data.medium_display}
+              </UnknownText>
+            </ScrollView>
           </View>
         </View>
       )}
@@ -118,11 +119,13 @@ export default SearchItem;
 const makeStyles = (colors: any) =>
   StyleSheet.create({
     root: {
+      display: 'flex',
       flex: 1,
       backgroundColor: colors.background,
     },
-    loading: { marginTop: 8 },
+    loading: { marginTop: 16 },
     artworkContainer: {
+      display: 'flex',
       flex: 1,
     },
     image: {
@@ -130,21 +133,24 @@ const makeStyles = (colors: any) =>
       resizeMode: 'contain',
       width: Dimensions.get('window').width,
       height: undefined,
+      flexGrow: 1,
     },
-    informationContainer: {
-      display: 'flex',
-      flex: 0.1,
-      padding: 16,
-    },
-    informationHeaderContainer: {
+    contentContainer: {
       display: 'flex',
       flex: 1,
+      padding: 16,
+      overflowY: 'auto',
+    },
+    headerContainer: {
+      display: 'flex',
       justifyContent: 'space-between',
       flexDirection: 'row',
+      marginBottom: 8,
     },
     titleContainer: {
       display: 'flex',
       flex: 1,
+      flexGrow: 1,
     },
     title: {
       fontWeight: '700',
@@ -162,6 +168,8 @@ const makeStyles = (colors: any) =>
     detailsContainer: {
       display: 'flex',
       flex: 1,
+      flexGrow: 1,
       padding: 16,
+      backgroundColor: 'blue',
     },
   });

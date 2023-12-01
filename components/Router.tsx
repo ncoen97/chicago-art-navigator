@@ -31,6 +31,7 @@ const Router = () => {
         options={{
           drawerLabel: 'Settings',
           title: 'Art Institute Of Chicago',
+          drawerItemStyle: { display: 'none' }, // We hide it for now bc it's empty
         }}
       />
       <Drawer.Screen
