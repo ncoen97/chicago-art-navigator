@@ -3,7 +3,6 @@ import React, { useEffect, useMemo } from 'react';
 import { ActivityIndicator, Text, useTheme } from 'react-native-paper';
 import useArtwork from '../../hooks/useArtwork';
 import { BackHandler, Dimensions, Image, StyleSheet, View } from 'react-native';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { addArtwork, removeArtwork } from '../../redux/slices/favoritesSlice';
 import { RootState } from '../../redux/slices/rootSlice';
@@ -11,6 +10,7 @@ import { IArtwork } from '../../types/api';
 import { useIsFocused } from '@react-navigation/native';
 import UnknownText from '../../components/UnknownText';
 import { ScrollView } from 'react-native-gesture-handler';
+import FavIcon from '../../components/FavIcon';
 
 const SearchItem = () => {
   const { colors } = useTheme();
@@ -38,11 +38,9 @@ const SearchItem = () => {
     }
   }, [origin]);
 
-  //@ts-ignore We make sure it's not undefined while rendering
-  const favArtwork = () => dispatch(addArtwork(getArtwork?.data));
-
-  //@ts-ignore We make sure it's not undefined while rendering
-  const unfavArtwork = () => dispatch(removeArtwork(getArtwork?.data.id));
+  const toggleFav = () =>
+    //@ts-ignore We make sure it's not undefined while rendering
+    isFav ? dispatch(removeArtwork(getArtwork?.data.id)) : dispatch(addArtwork(getArtwork?.data));
 
   return (
     <View style={styles.root}>
@@ -67,27 +65,7 @@ const SearchItem = () => {
                   {getArtwork?.data.artist_title}
                 </UnknownText>
               </View>
-              {isFav ? (
-                <MaterialCommunityIcons
-                  style={styles.icon}
-                  backgroundColor="transparent"
-                  underlayColor="gray"
-                  onPress={unfavArtwork}
-                  name="heart"
-                  size={24}
-                  color="red"
-                />
-              ) : (
-                <MaterialCommunityIcons
-                  style={styles.icon}
-                  backgroundColor="transparent"
-                  underlayColor="gray"
-                  onPress={favArtwork}
-                  name="heart-outline"
-                  size={24}
-                  color="red"
-                />
-              )}
+              <FavIcon isFav={isFav} toggleFav={toggleFav} />
             </View>
             <ScrollView>
               <Text>This artwork is currently{getArtwork?.data.is_on_view ? '' : ' not'} on display.</Text>
@@ -145,6 +123,7 @@ const makeStyles = (colors: any) =>
       display: 'flex',
       justifyContent: 'space-between',
       flexDirection: 'row',
+      alignItems: 'flex-start',
       marginBottom: 8,
     },
     titleContainer: {
@@ -158,12 +137,6 @@ const makeStyles = (colors: any) =>
     },
     subtitle: {
       fontSize: 16,
-    },
-    icon: {
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      flexGrow: 0,
     },
     detailsContainer: {
       display: 'flex',
